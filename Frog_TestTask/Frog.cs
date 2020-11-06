@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Frog_TestTask
@@ -41,7 +42,13 @@ namespace Frog_TestTask
 
         public bool Move(Point moveTo)
         {
-            if (moveTo.Coordinate_X >= 0 && moveTo.Coordinate_X <= 16 && moveTo.Coordinate_Y >= 0 && moveTo.Coordinate_Y <= 10 && 
+            var canMove = moveTo.Coordinate_X >= 0
+                          && moveTo.Coordinate_X <= 16
+                          && moveTo.Coordinate_Y >= 0
+                          && moveTo.Coordinate_Y <= 10
+                          && TreePositions.All(x => x.Coordinate_X != moveTo.Coordinate_X && x.Coordinate_Y != moveTo.Coordinate_Y);
+
+            if (canMove &&
                 (moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 3 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y ||
                 moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 2 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y - 1 ||
                 moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 2 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y + 1 ||
