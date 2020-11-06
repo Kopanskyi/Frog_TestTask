@@ -46,18 +46,49 @@ namespace Frog_TestTask
                           && moveTo.Coordinate_X <= 16
                           && moveTo.Coordinate_Y >= 0
                           && moveTo.Coordinate_Y <= 10
-                          && TreePositions.All(x => x.Coordinate_X != moveTo.Coordinate_X && x.Coordinate_Y != moveTo.Coordinate_Y);
+                          && TreePositions.All(p => p.Coordinate_X != moveTo.Coordinate_X && p.Coordinate_Y != moveTo.Coordinate_Y);
 
-            if (canMove &&
-                (moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 3 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y ||
-                moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 2 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y - 1 ||
-                moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 2 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y + 1 ||
-                moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 1 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y - 2 ||
-                moveTo.Coordinate_X == CurrentPosition.Coordinate_X + 1 && moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y + 2))
+            if (!canMove)
+            {
+                return false;
+            }
+
+            var differenceBetweenXCoordinates = 0;
+            var newXCoordinateShouldBe = CurrentPosition.Coordinate_X;
+
+            // Defining the difference between old and new X coordinate
+            if (moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y)
+            {
+                differenceBetweenXCoordinates = 3;
+            }
+            else if (moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y + 1 ||
+                    moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y - 1)
+            {
+                differenceBetweenXCoordinates = 2;
+            }
+            else if (moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y + 2 ||
+                    moveTo.Coordinate_Y == CurrentPosition.Coordinate_Y - 2)
+            {
+                differenceBetweenXCoordinates = 1;
+            }
+
+            // Defining what new X coordinate should be
+            for (int i = 0; i < differenceBetweenXCoordinates; i++)
+            {
+                newXCoordinateShouldBe++;
+
+                if (newXCoordinateShouldBe > 16)
+                {
+                    newXCoordinateShouldBe = 1;
+                }
+            }
+
+            if (canMove && differenceBetweenXCoordinates != 0 && 
+                moveTo.Coordinate_X == newXCoordinateShouldBe)
             {
                 CurrentPosition = moveTo;
                 return true;
-            }
+            }           
 
             return false;
         }
